@@ -35,9 +35,9 @@ docker pull arcadiacoin/arcadia:$TAG
 # Run the arcadiacoin/arcadia container with the specified ports and volumes
 echo "Starting Node"
 docker run --restart=unless-stopped -d \
-  -p 7245:7045 \
-  -p 127.0.0.1:7246:7046 \
-  -p 127.0.0.1:7248:7048 \
+  -p 7045:7045 \
+  -p 127.0.0.1:7046:7046 \
+  -p 127.0.0.1:7048:7048 \
   -v ${ARCADIA_HOST_DIR}:/root \
   --name arcadia \
   arcadiacoin/arcadia:${TAG}
@@ -45,13 +45,20 @@ docker run --restart=unless-stopped -d \
 # Output result
 if docker ps --format '{{.Names}}' | grep -q arcadia; then
   echo "Arcadia node is running"
-  echo "Node address: 127.0.0.1:7046"
+  echo "RPC address: 127.0.0.1:7046"
   echo ""
   echo "==="
   echo ""
   echo "Helpful commands"
   echo "Logs: docker logs arcadia"
   echo "Restart: docker restart arcadia"
+  echo "Block count: curl -d '{\"action\":\"block_count\"}' 127.0.0.1:7046"
+  echo ""
+  echo "==="
+  echo ""
+  echo "Config Paths"
+  echo "Node: ${ARCADIA_DATA_DIR}config-node.toml"
+  echo "RPC: ${ARCADIA_DATA_DIR}config-rpc.toml"
 else
   echo "Node is not running. There was a problem."
 fi
